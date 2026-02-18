@@ -2,11 +2,12 @@
 balance = 10000
 correct_pin = "1234"
 
-
 # Function to verify PIN
 def verify_pin():
     pin = input("Enter your 4-digit PIN: ")
-    if pin == correct_pin:
+
+    # Using built-in functions
+    if pin.isdigit() and len(pin) == 4 and pin == correct_pin:
         print("PIN verified successfully!\n")
         return True
     else:
@@ -16,36 +17,43 @@ def verify_pin():
 
 # Function to check balance
 def check_balance():
-    global balance
-    print(f"Your current balance is: Rs.{balance}\n")
+    print("Your current balance is: Rs.{:.2f}\n".format(balance))
 
 
 # Function to deposit money
 def deposit():
     global balance
-    amount = float(input("Enter amount to deposit: "))
+    try:
+        amount = float(input("Enter amount to deposit: "))
+        
+        if amount <= 0:
+            print("Invalid amount!\n")
+        else:
+            balance += amount
+            print("Deposit successful!")
+            print("Updated Balance: Rs.{:.2f}\n".format(balance))
     
-    if amount > 0:
-        balance += amount
-        print(f"Rs.{amount} deposited successfully.")
-        print(f"Updated Balance: Rs.{balance}\n")
-    else:
-        print("Invalid amount!\n")
+    except ValueError:   # Built-in exception
+        print("Please enter a valid number!\n")
 
 
 # Function to withdraw money
 def withdraw():
     global balance
-    amount = float(input("Enter amount to withdraw: "))
-    
-    if amount <= 0:
-        print("Invalid amount!\n")
-    elif amount > balance:
-        print("Insufficient balance!\n")
-    else:
-        balance -= amount
-        print(f"Rs.{amount} withdrawn successfully.")
-        print(f"Remaining Balance: Rs.{balance}\n")
+    try:
+        amount = float(input("Enter amount to withdraw: "))
+
+        if amount <= 0:
+            print("Invalid amount!\n")
+        elif amount > balance:
+            print("Insufficient balance!\n")
+        else:
+            balance -= amount
+            print("Withdrawal successful!")
+            print("Remaining Balance: Rs.{:.2f}\n".format(balance))
+
+    except ValueError:
+        print("Please enter a valid number!\n")
 
 
 # Function to display menu
@@ -56,9 +64,9 @@ def atm_menu():
         print("2. Deposit")
         print("3. Withdraw")
         print("4. Exit")
-        
+
         choice = input("Choose an option (1-4): ")
-        
+
         if choice == "1":
             check_balance()
         elif choice == "2":
@@ -67,7 +75,7 @@ def atm_menu():
             withdraw()
         elif choice == "4":
             print("Thank you for using ATM. Goodbye!")
-            break
+            exit()   # built-in function
         else:
             print("Invalid choice! Try again.\n")
 
